@@ -6,6 +6,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+type Config struct {
+	Server struct {
+		Port int `mapstructure:"port"`
+	} `mapstructure:"server"`
+	Databases []struct {
+		User     string `mapstructure:"user"`
+		Password string `mapstructure:"password"`
+		Host     string `mapstructure:"host"`
+	} `mapstructure:"databases"`
+}
+
 func main() {
 	viper := viper.New()
 	viper.AddConfigPath("./config/")
@@ -17,5 +28,13 @@ func main() {
 		panic(fmt.Errorf("failed to read config file: %w", err))
 	}
 
-	fmt.Println("Server Port:", viper.GetInt("server.port"))
+	// configuration struct
+	var config Config
+	if err = viper.Unmarshal(&config); err != nil {
+		fmt.Printf("unmarshal config error: %v", err)
+	}
+    fmt.Println("Config port: ", config.Server.Port)
+    for _, db := range config.Databases {
+        fmt.Printf("Database User: %s, Password: %s, Host: %s\n", db.User, db.Password, db.Host)
+    }
 }
