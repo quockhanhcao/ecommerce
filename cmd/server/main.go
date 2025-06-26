@@ -1,10 +1,9 @@
 package main
 
 import (
-	"github.com/quockhanhcao/ecommerce/internal/router"
+	"github.com/quockhanhcao/ecommerce/internal/inititialize"
 )
 
 func main() {
-	router := router.NewRouter()
-	router.Run(":8002")
+	inititialize.Run()
 }

@@ -1,0 +1,5 @@
+package inititialize
+
+func InitPostgres() {
+
+}

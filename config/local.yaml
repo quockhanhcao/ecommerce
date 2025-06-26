@@ -1,14 +1,19 @@
 server:
   port: 8082
-databases:
-  - user: admin
-    host: localhost
-    password: admin
-    dbName: shopDEV
-  - user: order
-    host: localhost
-    password: order
-    dbName: shopOrderDEV
-security:
-  jwt:
-    key: abc123
+postgres:
+  host: 127.0.0.1
+  port: 5432
+  user: postgres
+  password: postgres
+  dbname: shopdevgo
+  sslmode: disable
+  maxIdleConns: 10
+  maxOpenConns: 100
+  connMaxLifetime: 3600
+logger:
+  logLevel: debug
+  filePath: "./storages/logs/dev.001.log"
+  maxSize: 500
+  maxAge: 30
+  maxBackups: 3
+  compress: true
