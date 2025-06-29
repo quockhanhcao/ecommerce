@@ -10,8 +10,8 @@ type Config struct {
 	// 	Host     string `mapstructure:"host"`
 	// } `mapstructure:"databases"`
 
-	Postgres PostgresConfig `mapstructure:"postgres"`
-	LoggerConfig   LoggerConfig   `mapstructure:"logger"`
+	Postgres     PostgresConfig `mapstructure:"postgres"`
+	LoggerConfig LoggerConfig   `mapstructure:"logger"`
 }
 
 type PostgresConfig struct {
