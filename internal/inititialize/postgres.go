@@ -12,7 +12,7 @@ import (
 )
 
 func InitPostgres() {
-	config := global.Config.Postgres
+	config := global.Config.PostgresConfig
 	dsn := "host=%s user=%s password=%s dbname=%s port=%d sslmode=%s"
 	connectionString := fmt.Sprintf(dsn, config.Host, config.User, config.Password, config.DBName, config.Port, config.SSLMode)
 	db := openDB(connectionString)
@@ -53,7 +53,7 @@ func openDB(connString string) *gorm.DB {
 // }
 
 func SetPool() {
-	config := global.Config.Postgres
+	config := global.Config.PostgresConfig
 	sqlDb, err := global.DB.DB()
 	if err != nil {
 		fmt.Println("postgres set pool error:", err)

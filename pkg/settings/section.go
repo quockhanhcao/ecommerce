@@ -4,14 +4,9 @@ type Config struct {
 	// Server struct {
 	// 	Port int `mapstructure:"port"`
 	// } `mapstructure:"server"`
-	// Databases []struct {
-	// 	User     string `mapstructure:"user"`
-	// 	Password string `mapstructure:"password"`
-	// 	Host     string `mapstructure:"host"`
-	// } `mapstructure:"databases"`
-
-	Postgres     PostgresConfig `mapstructure:"postgres"`
+	PostgresConfig     PostgresConfig `mapstructure:"postgres"`
 	LoggerConfig LoggerConfig   `mapstructure:"logger"`
+	RedisConfig        RedisConfig    `mapstructure:"redis"`
 }
 
 type PostgresConfig struct {
@@ -33,4 +28,12 @@ type LoggerConfig struct {
 	MaxBackups int    `mapstructure:"maxBackups"` // Maximum number of old log files to retain
 	MaxAge     int    `mapstructure:"maxAge"`     // Maximum number of days to retain old log files
 	Compress   bool   `mapstructure:"compress"`   // Whether to compress rotated log files
+}
+
+type RedisConfig struct {
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	Password string `mapstructure:"password"`
+	DB       int    `mapstructure:"db"`
+	PoolSize int    `mapstructure:"poolSize"`
 }
