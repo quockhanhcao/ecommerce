@@ -1,46 +1,40 @@
 package inititialize
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
-	"github.com/quockhanhcao/ecommerce/internal/controller"
-	"github.com/quockhanhcao/ecommerce/internal/middlewares"
+	"github.com/quockhanhcao/ecommerce/global"
+	"github.com/quockhanhcao/ecommerce/internal/routers"
 )
 
-func MiddlewareA() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		fmt.Println("Before -> middlewareA")
-		c.Next()
-		fmt.Println("After -> middlewareA")
-	}
-}
-
-func MiddlewareB() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		fmt.Println("Before -> middlewareB")
-		c.Next()
-		fmt.Println("After -> middlewareB")
-	}
-}
-
-func MiddlewareC(c *gin.Context) {
-	fmt.Println("Before -> middlewareC")
-	c.Next()
-	fmt.Println("After -> middlewareC")
-}
-
 func InitRouter() *gin.Engine {
-	router := gin.Default()
-
-	// use middleware
-	router.Use(middlewares.AuthMiddleware(), MiddlewareB(), MiddlewareC)
-
-	v1 := router.Group("/v1")
-	{
-		v1.GET("/ping/:name", controller.NewPongController().Pong)
-		v1.GET("/user/:id", controller.NewUserController().GetUserById)
+	var router *gin.Engine
+	if global.Config.ServerConfig.Mode == "dev" {
+		gin.SetMode(gin.DebugMode)
+		gin.ForceConsoleColor()
+		router = gin.Default()
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+		router = gin.New()
 	}
 
+	// middlewares
+	// router.Use() // logging
+	// router.Use() // cors
+	// router.Use() // rate limit
+	managerRouter := routers.RouterGroupApp.Manager
+	userRouter := routers.RouterGroupApp.User
+
+	MainGroup := router.Group("/v1/2025")
+	{
+		MainGroup.GET("/checkStatus")
+	}
+	{
+		userRouter.InitUserRouter(MainGroup)
+		userRouter.InitProductRouter(MainGroup)
+	}
+	{
+		managerRouter.InitAdminRouter(MainGroup)
+		managerRouter.InitUserRouter(MainGroup)
+	}
 	return router
 }

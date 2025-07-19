@@ -4,9 +4,10 @@ type Config struct {
 	// Server struct {
 	// 	Port int `mapstructure:"port"`
 	// } `mapstructure:"server"`
-	PostgresConfig     PostgresConfig `mapstructure:"postgres"`
-	LoggerConfig LoggerConfig   `mapstructure:"logger"`
-	RedisConfig        RedisConfig    `mapstructure:"redis"`
+	ServerConfig   ServerConfig   `mapstructure:"server"`
+	PostgresConfig PostgresConfig `mapstructure:"postgres"`
+	LoggerConfig   LoggerConfig   `mapstructure:"logger"`
+	RedisConfig    RedisConfig    `mapstructure:"redis"`
 }
 
 type PostgresConfig struct {
@@ -19,6 +20,11 @@ type PostgresConfig struct {
 	MaxIdleConns    int    `mapstructure:"maxIdleConns"`
 	MaxOpenConns    int    `mapstructure:"maxOpenConns"`
 	ConnMaxLifetime int    `mapstructure:"connMaxLifetime"`
+}
+
+type ServerConfig struct {
+	Port int    `mapstructure:"port"`
+	Mode string `mapstructure:"mode"`
 }
 
 type LoggerConfig struct {
