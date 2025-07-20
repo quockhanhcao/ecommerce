@@ -5,6 +5,9 @@ import (
 	"gorm.io/gorm"
 )
 
+// using this model to create user table
+// model to db
+
 type User struct {
 	gorm.Model
 	UUID     uuid.UUID `gorm:"column:uuid;type:varchar(255);not null;index:idx_uuid;unique"`

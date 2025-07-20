@@ -5,9 +5,10 @@ import (
 	"time"
 
 	"github.com/quockhanhcao/ecommerce/global"
-	"github.com/quockhanhcao/ecommerce/internal/entity"
+	// "github.com/quockhanhcao/ecommerce/internal/entity"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
+	"gorm.io/gen"
 	"gorm.io/gorm"
 )
 
@@ -21,7 +22,8 @@ func InitPostgres() {
 
 	// set pool
 	SetPool()
-	migrateTables()
+	// migrateTables()
+    genTableDAO()
 }
 
 func openDB(connString string) *gorm.DB {
@@ -63,12 +65,32 @@ func SetPool() {
 	sqlDb.SetConnMaxLifetime(time.Duration(config.ConnMaxLifetime) * time.Second)
 }
 
-func migrateTables() {
-	err := global.DB.AutoMigrate(
-		&entity.User{},
-		&entity.Role{},
-	)
-	if err != nil {
-		global.Logger.Error("Failed to migrate tables", zap.Error(err))
-	}
+// func migrateTables() {
+// 	err := global.DB.AutoMigrate(
+// 		&entity.User{},
+// 		&entity.Role{},
+// 	)
+// 	if err != nil {
+// 		global.Logger.Error("Failed to migrate tables", zap.Error(err))
+// 	}
+// }
+
+func genTableDAO() {
+	g := gen.NewGenerator(gen.Config{
+		OutPath: "./internal/model",
+		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // generate mode
+	})
+
+	// db, _ := gorm.Open(postgres.Open(connString), &gorm.Config{})
+	g.UseDB(global.DB) // reuse your gorm db
+    g.GenerateModel("crm_users")
+
+	// // Generate basic type-safe DAO API for struct `model.User` following conventions
+	// g.ApplyBasic(model.User{})
+
+	// // Generate Type Safe API with Dynamic SQL defined on Querier interface for `model.User` and `model.Company`
+	// g.ApplyInterface(func(Querier) {}, model.User{}, model.Company{})
+
+	// Generate the code
+	g.Execute()
 }
