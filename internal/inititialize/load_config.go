@@ -19,6 +19,7 @@ func LoadConfig() {
 	}
 
 	// configuration struct
+    // load config into global.Config
 	if err = viper.Unmarshal(&global.Config); err != nil {
 		fmt.Printf("unmarshal config error: %v", err)
 	}

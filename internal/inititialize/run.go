@@ -1,6 +1,8 @@
 package inititialize
 
 import (
+	"fmt"
+
 	"github.com/quockhanhcao/ecommerce/global"
 	"go.uber.org/zap"
 )
@@ -14,5 +16,5 @@ func Run() {
 	InitRedis()
 
 	router := InitRouter()
-	router.Run(":8002")
+	router.Run(fmt.Sprintf(":%d", global.Config.ServerConfig.Port))
 }
